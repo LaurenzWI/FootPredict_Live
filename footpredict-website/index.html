@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1017">
+  <meta name="description" content="FootPredict – aktuelle Fußballspiele und automatisch berechnete Siegchancen aus echten Spieldaten.">
+  <title>FootPredict – Live-Spiele & Prognosen</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#spiele"><span class="brand-icon" aria-hidden="true">⚽</span>Foot<span>Predict</span></a>
+    <nav aria-label="Navigation">
+      <a href="#spiele" data-nav="spiele" class="active">Spiele</a>
+      <a href="#info" data-nav="info">Algorithmus</a>
+    </nav>
+  </header>
+  <main>
+    <section id="spiele" class="page active-page">
+      <div class="hero">
+        <p class="eyebrow">DATENBASIERTE FUSSBALLPROGNOSEN</p>
+        <h1>Echte Spiele.<br><span>Automatische Prognosen.</span></h1>
+        <p>Aktuelle Ergebnisse und Begegnungen aus einer öffentlichen Fußballdatenquelle. Unsere Wahrscheinlichkeiten werden automatisch aus vergangenen Spielen berechnet – ohne manuelle Eingaben.</p>
+        <div class="hero-stats"><span><span class="green-dot"></span>Spielstände automatisch aktualisiert</span><span>Keine Wettquoten-Eingabe</span></div>
+      </div>
+      <div class="section-title">
+        <div><p class="eyebrow">MATCHCENTER</p><h2>Fußballspiele</h2><p class="subheading">Alle Angaben in deiner lokalen Zeitzone.</p></div>
+        <span id="updatedAt" class="update-note">Lade Daten …</span>
+      </div>
+      <div class="controls">
+        <div class="control"><label for="league">Wettbewerb</label>
+          <select id="league"><option value="all">Alle Wettbewerbe</option><option value="ger.1">Bundesliga</option><option value="aut.1">Österreichische Bundesliga</option><option value="eng.1">Premier League</option><option value="esp.1">La Liga</option><option value="ita.1">Serie A</option><option value="fra.1">Ligue 1</option><option value="uefa.champions">Champions League</option><option value="uefa.europa">Europa League</option><option value="uefa.nations">Nations League</option></select>
+        </div>
+        <div class="control"><label for="period">Zeitraum</label><select id="period"><option value="7">Nächste 7 Tage</option><option value="0">Heute</option></select></div>
+        <button type="button" id="refresh" class="refresh-btn" aria-label="Spieldaten aktualisieren">↻ Aktualisieren</button>
+      </div>
+      <p class="notice">Die Prozentwerte sind <strong>Schätzungen des FootPredict-Modells</strong>, keine Buchmacherquoten. Bei laufenden Spielen werden sie anhand von Spielstand und Minute neu berechnet, sofern beides verfügbar ist.</p>
+      <div id="loadingState" class="loading" role="status">Spiele und Mannschaftsform werden geladen …</div>
+      <div id="errorState" class="alert" role="alert" hidden></div>
+      <div id="matchCount" class="match-count"></div>
+      <div id="matchList" class="match-grid" aria-live="polite"></div>
+      <div id="emptyState" class="empty-state" hidden><span class="empty-ball">⚽</span><h3>Keine Spiele gefunden</h3><p>Für die ausgewählte Liga und den Zeitraum sind gerade keine Partien eingetragen. Versuche eine andere Auswahl.</p></div>
+      <p class="data-credit">Datenquelle: <a href="https://www.espn.com/soccer/scoreboard" target="_blank" rel="noopener noreferrer">ESPN</a> (öffentliche Schnittstelle, nicht offiziell garantiert). Automatisches Aktualisieren etwa jede Minute; Verzögerungen beim Anbieter möglich.</p>
+    </section>
+    <section id="info" class="page">
+      <p class="eyebrow">UNSER MODELL</p>
+      <h1 class="info-heading">So berechnet FootPredict die Gewinnchancen</h1>
+      <p class="info-intro">Die Spiele und Ergebnisse stammen aus ESPN. Die Prozentwerte erzeugt unser eigener Algorithmus. Wettanbieterquoten wären nicht kostenlos und zuverlässig für alle Partien abrufbar, daher verwenden wir stattdessen tatsächliche Teamleistungen.</p>
+      <div class="info-grid">
+        <article class="info-card"><span class="step">01</span><h3>Spieldaten abrufen</h3><p>Die Website lädt Spiele mit Anstoßzeiten, Spielständen und Ergebnissen automatisch. Historische Resultate derselben Liga werden separat geladen.</p></article>
+        <article class="info-card"><span class="step">02</span><h3>Letzte fünf Spiele</h3><p>Für beide Mannschaften werden die letzten fünf abgeschlossenen Ligaspiele vor der Partie untersucht: Sieg, Unentschieden, Niederlage, erzielte und kassierte Tore.</p></article>
+        <article class="info-card"><span class="step">03</span><h3>Grundwahrscheinlichkeiten</h3><p>Aus durchschnittlichen Toren und Gegentoren werden erwartete Tore berechnet. Ein Poisson-Modell ermittelt daraus die Chancen auf Heimsieg, Remis und Auswärtssieg.</p></article>
+        <article class="info-card"><span class="step">04</span><h3>Form & Serienbonus</h3><p>Aktuelle Siege und Niederlagen beeinflussen die Wahrscheinlichkeiten. Drei Siege oder Niederlagen hintereinander geben einen zusätzlichen Bonus – angelehnt an euren Java-Algorithmus.</p></article>
+        <article class="info-card"><span class="step">05</span><h3>Live-Berechnung</h3><p>Bei laufenden Partien mit bekanntem Spielstand und Spielminute schätzt das Modell verbleibende Tore und berechnet die aktuellen Chancen erneut. Ohne diese Angaben erscheint die Vorhersage vor Spielbeginn.</p></article>
+        <article class="info-card"><span class="step">06</span><h3>Keine erfundenen Daten</h3><p>Falls der Datenanbieter nicht erreichbar ist oder weniger als drei abgeschlossene Ligaspiele pro Team vorliegen, wird das offen angezeigt. Es werden keine Fantasie-Spiele oder Scheinquoten eingefügt.</p></article>
+      </div>
+      <p class="footnote">Hinweis: Modellschätzungen sind keine sicheren Vorhersagen. Der ESPN-Endpunkt ist öffentlich nutzbar, aber keine offiziell garantierte API. Die kostenlose Verfügbarkeit kann sich ändern.</p>
+    </section>
+  </main>
+  <footer><span>⚽ <strong>FootPredict</strong> · Studienprojekt</span><span>Daten von ESPN · Prognosen durch FootPredict</span></footer>
+  <script src="/app.js" defer></script>
+</body>
+</html>
