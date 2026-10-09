@@ -18,14 +18,20 @@ const formHtml = form => form?.map(g => `<span class="form-badge ${g === 'W' ? '
 
 function renderMatch(match) {
   const p = match.prediction;
+  // Die angezeigten Prozentwerte haben eine Nachkommastelle.
+  // Gleiche angezeigte Siegchancen erhalten auf beiden Seiten eine neutrale Farbe.
+  const homePct = Math.round(Number(p.home) * 10);
+  const awayPct = Math.round(Number(p.away) * 10);
+  const homeColor = homePct > awayPct ? 'prob-favorite' : homePct < awayPct ? 'prob-underdog' : 'prob-even';
+  const awayColor = awayPct > homePct ? 'prob-favorite' : awayPct < homePct ? 'prob-underdog' : 'prob-even';
   const scorePresent = match.homeScore != null && match.awayScore != null;
   const score = scorePresent && match.state !== 'scheduled' ? `${match.homeScore} : ${match.awayScore}` : 'VS';
   const date = formatDate(match.date);
   const badge = match.state === 'live' ? '<span class="status live-status"><i></i> LIVE</span>' : match.state === 'finished' ? '<span class="status finished">Beendet</span>' : '<span class="status scheduled">Bevorstehend</span>';
   const prediction = p.available
     ? `<div class="prob-head"><span>${p.predictionType === 'live' ? 'Live-Wahrscheinlichkeit' : 'Prognose vor Spielbeginn'}</span><span class="model-tag">FootPredict-Modell</span></div>
-       <div class="probability" aria-label="Heimsieg ${pct(p.home)}, Remis ${pct(p.draw)}, Auswärtssieg ${pct(p.away)}"><span class="win" style="width:${p.home}%"></span><span class="draw" style="width:${p.draw}%"></span><span class="loss" style="width:${p.away}%"></span></div>
-       <div class="prob-labels"><span>1 · ${pct(p.home)}</span><span>X · ${pct(p.draw)}</span><span>2 · ${pct(p.away)}</span></div>
+       <div class="probability" role="img" aria-label="Heimsieg ${pct(p.home)}, Remis ${pct(p.draw)}, Auswärtssieg ${pct(p.away)}"><span class="${homeColor}" style="width:${p.home}%"></span><span class="prob-draw" style="width:${p.draw}%"></span><span class="${awayColor}" style="width:${p.away}%"></span></div>
+       <div class="prob-labels"><span class="${homeColor}">1 · ${pct(p.home)}</span><span class="prob-draw">X · ${pct(p.draw)}</span><span class="${awayColor}">2 · ${pct(p.away)}</span></div>
        <details class="details"><summary>Berechnung & Form ansehen</summary><div class="detail-content"><p><strong>${esc(match.home.name)}</strong> <span class="form-box">${formHtml(p.homeForm)}</span> (${p.counts.home} Spiele)</p><p><strong>${esc(match.away.name)}</strong> <span class="form-box">${formHtml(p.awayForm)}</span> (${p.counts.away} Spiele)</p><p>Erwartete Tore: ${p.expectedGoals.home.toFixed(2).replace('.', ',')} / ${p.expectedGoals.away.toFixed(2).replace('.', ',')}</p>${p.bonuses.length ? `<p>Serienbonus: ${esc(p.bonuses.join('; '))}</p>` : ''}<small>S = Sieg · U = Unentschieden · N = Niederlage. Neueste Partie links.</small></div></details>`
     : `<div class="unavailable">Noch keine seriöse Prognose: ${esc(p.reason)}<br><small>Verfügbare Spiele: ${p.counts.home} / ${p.counts.away}.</small></div>`;
   const logo = (team) => /^https:\/\//i.test(team.logo || '') ? `<img loading="lazy" src="${esc(team.logo)}" alt="" referrerpolicy="no-referrer">` : '<span>⚽</span>';

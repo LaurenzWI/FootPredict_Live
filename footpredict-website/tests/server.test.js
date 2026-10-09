@@ -1,7 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { once } = require('node:events');
-const { createApp } = require('../server');
+const { createApp } = require('../../server');
 
 function event(id, date, home, away, homeScore, awayScore, state = 'post') {
   return {

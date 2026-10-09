@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { normalizeEvent, recentGames, resultProbabilities, predict } = require('../predictor');
+const { normalizeEvent, recentGames, resultProbabilities, predict } = require('../../predictor');
 
 function event(id, date, home, away, hs, as, state = 'post', clock = '') {
   return normalizeEvent({

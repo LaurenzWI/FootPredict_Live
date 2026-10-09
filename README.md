@@ -46,7 +46,7 @@ Da kostenlose und zuverlässige Buchmacherquoten nicht für alle Partien verfüg
 - `app.js`: Browser-Logik, automatisches Laden, Balkendiagramme, Filter
 - `predictor.js`: Berechnungen und Datenaufbereitung
 - `server.js`: kleiner lokaler Server und ESPN-Datenabruf (Node.js)
-- `tests/`: automatisierte Tests
+- `footpredict-website/tests`: automatisierte Tests
 
 ## Tests ausführen
 
