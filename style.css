@@ -20,3 +20,15 @@ footer{max-width:1180px;margin:auto;padding:25px 24px 45px;border-top:1px solid 
 [hidden]{display:none!important}
 @media(max-width:760px){.topbar{padding:0 16px;height:65px}.topbar nav a{padding:9px 10px;font-size:12px}.brand{font-size:19px}main{padding:20px 16px 50px}.hero{padding:37px 23px;min-height:auto}.hero h1{letter-spacing:-1.6px}.hero>p:not(.eyebrow){font-size:14px}.section-title{align-items:start;flex-direction:column;margin-top:34px}.section-title h2{font-size:29px}.match-grid,.info-grid{grid-template-columns:1fr}.controls{gap:10px}.control{min-width:100%}.refresh-btn{width:100%}.match-card{padding:19px}.hero-stats{gap:8px;flex-direction:column}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* Platzsparender Info-Hinweis: Hover auf Desktop, Klick/Tap auf Touchgeraeten. */
+.model-info{position:relative;z-index:5;width:max-content;max-width:100%;margin:19px 0 16px}
+.model-info-trigger{display:inline-flex;align-items:center;gap:8px;list-style:none;cursor:pointer;user-select:none;padding:9px 14px;border:1px solid #35644f;border-radius:10px;background:#13281f;color:#bde5d2;font-size:13px;font-weight:750;transition:background .15s,border-color .15s}
+.model-info-trigger::-webkit-details-marker{display:none}
+.model-info-trigger span{font-size:17px;line-height:1;color:var(--green)}
+.model-info-trigger:hover,.model-info[open] .model-info-trigger{background:#1a3a2a;border-color:#43a876}
+.model-info-trigger:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+.model-info-panel{position:absolute;left:0;top:calc(100% + 9px);width:min(670px,calc(100vw - 48px));padding:16px 19px;border-radius:13px;border:1px solid #34654e;background:#10251e;box-shadow:0 16px 36px #0009;color:#b8d1c5;font-size:13px;line-height:1.7}
+.model-info-panel p{margin:0}
+.model-info-panel strong{color:#eef9f1}
+@media(max-width:760px){.model-info{width:100%}.model-info-panel{position:relative;top:auto;left:auto;width:100%;margin-top:10px}}

@@ -82,6 +82,44 @@ function navigate() {
 league.addEventListener('change', () => loadMatches());
 period.addEventListener('change', () => loadMatches());
 refresh.addEventListener('click', () => loadMatches());
+// Das Info-Feld oeffnet sich per Hover (Maus) und per Klick/Tippen (auch Tastatur).
+const modelInfo = $('#modelInfo');
+if (modelInfo && typeof modelInfo.querySelector === 'function') {
+  const modelInfoTrigger = modelInfo.querySelector('summary');
+  let modelInfoPinned = false;
+  let modelInfoHovered = false;
+  modelInfo.addEventListener('pointerenter', event => {
+    if (event.pointerType === 'mouse') {
+      modelInfoHovered = true;
+      modelInfo.open = true;
+    }
+  });
+  modelInfo.addEventListener('pointerleave', event => {
+    if (event.pointerType === 'mouse') {
+      modelInfoHovered = false;
+      if (!modelInfoPinned) modelInfo.open = false;
+    }
+  });
+  modelInfoTrigger.addEventListener('click', event => {
+    event.preventDefault();
+    modelInfoPinned = !modelInfoPinned;
+    modelInfo.open = modelInfoPinned || modelInfoHovered;
+  });
+  document.addEventListener('pointerdown', event => {
+    if (!modelInfo.contains(event.target)) {
+      modelInfoPinned = false;
+      if (!modelInfoHovered) modelInfo.open = false;
+    }
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && modelInfo.open) {
+      modelInfoPinned = false;
+      modelInfoHovered = false;
+      modelInfo.open = false;
+      modelInfoTrigger.focus();
+    }
+  });
+}
 window.addEventListener('hashchange', navigate);
 // Keine Aktualisierung für inaktive Tabs; beim Wiederaufklappen nachholen.
 setInterval(() => { if (!document.hidden && !currentRequest) loadMatches(true); }, 60_000);
