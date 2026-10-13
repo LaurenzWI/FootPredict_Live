@@ -77,7 +77,7 @@
     const awayForm = recentGames(match.away.id, historicalEvents, match.date);
     const counts = { home: homeForm.length, away: awayForm.length };
     if (counts.home < 3 || counts.away < 3) {
-      return { available: false, reason: 'Für diese Partie sind nicht mindestens drei abgeschlossene Ligaspiele pro Team verfügbar.', counts };
+      return { available: false, reason: 'Für diese Partie konnten nicht mindestens drei frühere abgeschlossene Spiele pro Team gefunden werden (auch nach der Suche in allen verfügbaren Wettbewerben und Vorsaisonen).', counts };
     }
 
     const average = (games, key) => games.reduce((sum, game) => sum + game[key], 0) / games.length;
